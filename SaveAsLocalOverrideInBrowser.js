@@ -240,77 +240,60 @@
             relationship = "Other"; // Default or handle as needed
         }
 
-        // Map Claim Type and Claim Number to General Medical Expense Description
-        const expenseDescription = `${claimType} Claim # ${claimNumber}`;
+          // Map Claim Type and Claim Number to General Medical Expense Description
+          const expenseDescription = `${claimType} Claim # ${claimNumber}`;
 
-        // Format date as MM/DD/YYYY
-        const formattedDate = formatDate(dateVisited);
-
-        console.log(`Processing Claim Number: ${claimNumber}`);
-
-        // Fill the form fields with a 0.5-second delay between each
-        await fillFormField('DATE_FIELD_ID', formattedDate, true);
-        await delay(500); // 0.5-second delay
-
-        await fillFormField('PROVIDER_NAME_FIELD_ID', visitedProvider);
-        await delay(500); // 0.5-second delay
-
-        await fillFormField('EXPENSE_DESCRIPTION_FIELD_ID', expenseDescription);
-        await delay(500); // 0.5-second delay
-
-        await fillFormField('PATIENT_NAME_FIELD_ID', patientName);
-        await delay(500); // 0.5-second delay
-
-        await fillFormField('RELATIONSHIP_FIELD_ID', relationship);
-        await delay(500); // 0.5-second delay
-
-        // Fill the "Your Responsibility" amount field
-        await fillFormField('RESPONSIBILITY_FIELD_ID', formattedAmount);
-        await delay(500); // 0.5-second delay
-
-        // === Enhanced Code Starts Here ===
-        // Introduce additional delay before clicking back into the amount field
-        await delay(1000); // 1-second delay to allow the value to be set and any internal processing
-
-        // Click back into the amount field to trigger formatting
-        const amtField = document.getElementById('RESPONSIBILITY_FIELD_ID');
-        if (amtField) {
-            // Simulate focusing the field
-            amtField.focus();
-            console.log('Focused the "Your Responsibility" amount field.');
-            await delay(500); // 0.5-second delay
-
-            // Simulate clicking the field
-            amtField.click();
-            console.log('Clicked the "Your Responsibility" amount field to trigger formatting.');
-            await delay(1000); // 1-second delay to ensure formatting is applied
-
-            // Simulate blurring the field to trigger any onBlur events
-            amtField.blur();
-            console.log('Blurred the "Your Responsibility" amount field.');
-            await delay(500); // 0.5-second delay
-        } else {
-            logError(`Amount field with ID "RESPONSIBILITY_FIELD_ID" not found.`);
-        }
-        // === Enhanced Code Ends Here ===
-
-        // Update status
-        statusDiv.innerText = `Processing Claim Number: ${claimNumber}`;
-
-        // Wait for a longer period to ensure fields are filled and formatted
-        await delay(9000); // 9 seconds
-
-        // Click the "Add to Claim" button
-        const addButton = document.getElementById('ADD_CLAIM_BUTTON_ID');
-        if (addButton) {
-            addButton.click();
-            console.log(`Clicked "Add to Claim" for Claim Number: ${claimNumber}`);
-            statusDiv.innerText = `Submitted Claim Number: ${claimNumber}. Reloading to process next claim...`;
-        } else {
-            const errorMsg = `Add to Claim button not found for Claim Number: ${claimNumber}`;
-            logError(errorMsg);
-        }
-    }
+          // Format date as MM/DD/YYYY
+          const formattedDate = formatDate(dateVisited);
+  
+          console.log(`Processing Claim Number: ${claimNumber}`);
+  
+          // Fill the form fields with a 0.1-second delay between each
+          await fillFormField('ctl00_ContentPlaceHolder1_svcdfrstC4TextBox_I', formattedDate, true);
+          await delay(100); // 0.1-second delay
+  
+          await fillFormField('ctl00_ContentPlaceHolder1_prvnameC4TextBox_I', visitedProvider);
+          await delay(100); // 0.1-second delay
+  
+          await fillFormField('ctl00_ContentPlaceHolder1_prvinfoC4TextBox_I', expenseDescription);
+          await delay(100); // 0.1-second delay
+  
+          await fillFormField('ctl00_ContentPlaceHolder1_pnlPerson2_bnameC4TextBox_I', patientName);
+          await delay(100); // 0.1-second delay
+  
+          await fillFormField('ctl00_ContentPlaceHolder1_pnlPerson4_binfoC4TextBox_I', relationship);
+          await delay(100); // 0.1-second delay
+  
+          // Fill the "Your Responsibility" amount field
+          await fillFormField('ctl00_ContentPlaceHolder1_amtC4TextBox_I', responsibilityStr);
+          await delay(100); // 0.1-second delay
+    
+          // Click back into the amount field to trigger formatting
+          const amtField = document.getElementById('ctl00_ContentPlaceHolder1_amtC4TextBox_I');
+          if (amtField) {
+              amtField.click();
+              console.log('Clicked the "Your Responsibility" amount field to trigger formatting.');
+          } else {
+              logError(`Amount field with ID "ctl00_ContentPlaceHolder1_amtC4TextBox_I" not found.`);
+          }
+  
+          // Update status
+          statusDiv.innerText = `Processing Claim Number: ${claimNumber}`;
+  
+          // Wait for a longer period to ensure fields are filled and formatted
+          await delay(2000); // 2 seconds
+  
+          // Click the "Add to Claim" button
+          const addButton = document.getElementById('ctl00_ContentPlaceHolder1_addClaimBtn_I');
+          if (addButton) {
+              addButton.click();
+              console.log(`Clicked "Add to Claim" for Claim Number: ${claimNumber}`);
+              statusDiv.innerText = `Submitted Claim Number: ${claimNumber}. Reloading to process next claim...`;
+          } else {
+              const errorMsg = `Add to Claim button not found for Claim Number: ${claimNumber}`;
+              logError(errorMsg);
+          }
+      }
 
     // ==============================
     // Initialization on Page Load
